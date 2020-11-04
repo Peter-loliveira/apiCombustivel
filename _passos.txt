@@ -1,0 +1,49 @@
+1º - Para crir o projeto APICOMBUSTIVEL:
+a) Instalar o laravel = composer global require laravel/installer
+b) Criar o projeto = laravel new apiCombustivel
+
+2º - para criar os controllers e os models
+php artisan make:controller UsuarioController --resource --model=Usuario
+php artisan make:controller CarroController --resource --model=Carro
+
+3º - Para verificar as rotas padrões já criadas:
+php artisan route:list
+
+4º - Criar as rotas para Usuários e Carros no arquivo routes/api.php
+Route::resource('usuarios', UsuarioController::class);
+Route::resource('carros',CarroController::class);
+e ter certeza que foi importado:
+use App\Http\Controllers\CarroController;
+use App\Http\Controllers\UsuarioController;
+
+5º - Criar as Migtations (criador de tabelas) para usuario e Carro:
+php artisan make:migration create_usuarios_table
+php artisan make:migration create_carros_table
+Serão criados dois arquivos na pasta database/migrations
+
+6º - Configurar nas migration para criar os campos.
+no caso teremos o Laravel já cria dois campos por padrão e iremos acrescentar 3 (todos vindos do APPCombustivel):
+    Usuarios
+        $table->string('nome', 200);
+        $table->string('email', 200);
+        $table->string('senha', 200);
+    
+    Carros
+        $table->string('modelo', 200);
+        $table->double('consumoAlcool', 8,2);
+        $table->double('consumoGasolina', 8,2);
+        $table->string('nome', 200);
+        $table->string('nome', 200);
+        $table->unsignedBigInteger('usuario_id'); //TEM QUE SER unsignedBigInteger pois o campo ID é desse tipo
+        //O comando abaixo configura a foreign key e seta ela para QUANDO apagarmos um usuario, apagamos os seus carros tb
+        $table->foreign('usuario_id')
+        ->references('id')->on('usuarios')->onDelete('cascade')->onUpdate('cascade');
+
+7º - No arquivo .env fazer as segiontes alterações:
+    campo APP_NAME= colocar o nome da API
+        APP_NAME=ApiCombustivel
+    No campo APP_URL=http://127.0.0.1 substituir o final por localhost/ApiCombustivel
+        http://localhost/ApiCombustivel
+
+8º - Criar database e tabelas
+    Criar no mysql a database ApiCombustivel e depois rodar o comando 'php artisan migrate'.
