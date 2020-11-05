@@ -101,5 +101,24 @@ class UsuarioController extends Controller
 
     public function login(Request $request){
 
+        $email = $request->input('email');
+        $senha = $request->input('senha');
+
+        if(!$email || !$senha) {
+            return response('Credenciais invalidas!', 400);
+        }
+        
+        $usuario = Usuario::where('email', $email)->first();
+        
+        if (!$usuario) {
+            return response('Credenciais invalidas!', 400);
+        }
+
+        if(!Hash::check($senha, $usuario->senha)){
+            return response('Senha Invalida', 400);
+        }
+
+        return $usuario;
+
     }
 }
