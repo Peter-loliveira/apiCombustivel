@@ -35,6 +35,7 @@ class UsuarioController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         $us = $request->all();
@@ -45,12 +46,21 @@ class UsuarioController extends Controller
         $usuario->senha = $us['senha'];
         $confirmarSenha = $us['confirmarSenha'];
         
+        // Checa se as senhas digitadas são iguais
         if ($usuario->senha != $confirmarSenha)
         return response('Senhas não conferem!', 400);
 
-        $usuario->senha = Hash::make( $usuario->senha );
-        $usuario->save();
+        // Checa se o email digitado já existe
+        $usuarioExiste= Usuario::where('email', $usuario->email )->first();
+        if($usuarioExiste) {
+            return response('Já existe um usuario com esse email!', 400);
+        }
 
+        // Se tudo deu certo, encripta a senha e salva no banco
+        $usuario->senha = Hash::make( $usuario->senha );
+        $usuario->save(); 
+
+        // retorna o usuário só para fins de checagem
         return $usuario;
     }
 
@@ -104,21 +114,29 @@ class UsuarioController extends Controller
         $email = $request->input('email');
         $senha = $request->input('senha');
 
+        // Verifica se ambos os campos foram preenchidos
         if(!$email || !$senha) {
             return response('Credenciais invalidas!', 400);
         }
         
+        // verifica se existe o email digitado no banco
+        // Caso esteja certa, joga os dados do usuario na variavel $usuario
         $usuario = Usuario::where('email', $email)->first();
-        
+        // print_r($usuario);
         if (!$usuario) {
             return response('Credenciais invalidas!', 400);
         }
 
+        // Verifica se a senha digitada confere com a senha do banco. 
         if(!Hash::check($senha, $usuario->senha)){
             return response('Senha Invalida', 400);
+
         }
 
-        return $usuario;
+        // retorna o usuário só para fins de checagem
+        echo 'Login Efetuado com Sucesso. Bem vindo: ';
+        return response($usuario->nome, 200);
+        // return $usuario;
 
     }
 }
