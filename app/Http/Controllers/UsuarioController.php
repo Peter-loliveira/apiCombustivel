@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -15,6 +16,7 @@ class UsuarioController extends Controller
     public function index()
     {
         //
+        echo 'Peter Lange';
     }
 
     /**
@@ -35,7 +37,21 @@ class UsuarioController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $us = $request->all();
+
+        $usuario = new Usuario();
+        $usuario->nome = $us['nome'];
+        $usuario->email = $us['email'];
+        $usuario->senha = $us['senha'];
+        $confirmarSenha = $us['confirmarSenha'];
+        
+        if ($usuario->senha != $confirmarSenha)
+        return response('Senhas não conferem!', 400);
+
+        $usuario->senha = Hash::make( $usuario->senha );
+        $usuario->save();
+
+        return $usuario;
     }
 
     /**
@@ -81,5 +97,9 @@ class UsuarioController extends Controller
     public function destroy(Usuario $usuario)
     {
         //
+    }
+
+    public function login(Request $request){
+
     }
 }

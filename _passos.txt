@@ -47,3 +47,7 @@ no caso teremos o Laravel já cria dois campos por padrão e iremos acrescentar 
 
 8º - Criar database e tabelas
     Criar no mysql a database ApiCombustivel e depois rodar o comando 'php artisan migrate'.
+* se for necessário ZERER o banco: 
+    php artisan migrate:fresh
+    
+Agora partimos ára ao POSTMAN
