@@ -51,3 +51,33 @@ no caso teremos o Laravel já cria dois campos por padrão e iremos acrescentar 
     php artisan migrate:fresh
     
 Agora partimos ára ao POSTMAN
+Posts e rotas:
+
+ROTA: http://127.0.0.1:8000/api/usuarios/
+Post:
+{
+    "nome":"Jutta Lange",
+    "email": "jutta@email.com",
+    "senha": "123",
+    "confirmarSenha": "123"
+}
+
+
+Rota: http://127.0.0.1:8000/api/carros/
+Post:
+{
+    "modelo": "Ford KA",
+    "montadora": "Ford",
+    "consumoAlcool": 15,
+    "consumoGasolina": "17.8",
+    "usuario_id": 1
+}
+
+Rota: http://127.0.0.1:8000/api/usuarios/login
+Post:
+{
+    "email": "jutta@email.com",
+    "senha": "123"
+}
+
+Rota: http://127.0.0.1:8000/api/usuarios/1

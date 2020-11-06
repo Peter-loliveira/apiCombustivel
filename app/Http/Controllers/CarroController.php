@@ -73,7 +73,6 @@ class CarroController extends Controller
             return response('Esse usuario não existe!', 400);
         }
         
-        
         $carro->save();
         return response('Carro Cadastrado com Sucesso!', 201);
 

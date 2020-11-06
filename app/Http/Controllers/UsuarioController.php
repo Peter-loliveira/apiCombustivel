@@ -15,7 +15,6 @@ class UsuarioController extends Controller
      */
     public function index()
     {
-        //
         echo 'Peter Lange';
     }
 
@@ -70,9 +69,9 @@ class UsuarioController extends Controller
      * @param  \App\Models\Usuario  $usuario
      * @return \Illuminate\Http\Response
      */
-    public function show(Usuario $usuario)
+    public function show(int $usuario_id)
     {
-        //
+        return Usuario::with('carros')->find($usuario_id);
     }
 
     /**
@@ -130,13 +129,10 @@ class UsuarioController extends Controller
         // Verifica se a senha digitada confere com a senha do banco. 
         if(!Hash::check($senha, $usuario->senha)){
             return response('Senha Invalida', 400);
-
         }
 
+        return $usuario;
         // retorna o usuário só para fins de checagem
-        echo 'Login Efetuado com Sucesso. Bem vindo: ';
-        return response($usuario->nome, 200);
-        // return $usuario;
 
     }
 }
